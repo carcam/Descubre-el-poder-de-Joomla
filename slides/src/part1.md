@@ -77,10 +77,10 @@ Otras cositas: **Licencia**, formas de distribución, hoja de ruta...
 </div>
 <div class="column column__reference">
 
-### References
+### Referencias
 
 ![](./images/cover.png)
-Chapter 1
+Capítulo 1
 
 </div>
 </div>
@@ -102,18 +102,17 @@ _header: "Planificando el componente - Definiendo nuestros datos"
 
 ### Task Entity
 
-- Title
-- Description
-- State
-- Deadline
-- Creation date
+- Título
+- Descripcion
+- Estado
+
 </div>
 <div class="column column__reference">
 
-### References
+### Referencias
 
 ![](./images/cover.png)
-Chapter 1
+Capítulo 1
 
 </div>
 </div>
@@ -131,19 +130,19 @@ _header: "Planificando el componente"
 <div class="columns">
 <div class="column column__content">
 
-## Task Entity possible fields
+## Posibles campos de nuestros deseos
 
-- *Owner?*
-- *Author?*
-- *Follow-ups?*
+- *Autor?*
+- *Fecha de creación?*
+- *Cuánto lo quiero?*
 
 </div>
 <div class="column column__reference">
 
-### References
+### Referencias
 
 ![](./images/cover.png)
-Chapter 1
+Capítulo 1
 
 </div>
 </div>
@@ -163,14 +162,13 @@ _header: "Create the table in the database"
 Let's start with some code:
 
 ~~~sql
-CREATE TABLE IF NOT EXISTS `#__awco_ctl_tasks` (
+CREATE TABLE IF NOT EXISTS `#__aiwfc_deseos` (
     `id` INT(11) NOT NULL AUTO_INCREMENT,
-    `title` VARCHAR(255) NULL,
-    `state` TINYINT(1) NOT NULL DEFAULT 0,
-    `description` TEXT NOT NULL DEFAULT "",
-    `deadline` DATETIME NULL,
-    `created` DATETIME NULL,
-    `created_by` INT(11) NULL,
+    `titulo` VARCHAR(255) NULL,
+    `estate` TINYINT(1) NOT NULL DEFAULT 0,
+    `descripcion` TEXT NOT NULL DEFAULT "",
+    `creado` DATETIME NULL,
+    `creado_por` INT(11) NULL,
     PRIMARY KEY (`id`)
 ) DEFAULT COLLATE=utf8mb4_unicode_ci
 ~~~
@@ -178,10 +176,10 @@ CREATE TABLE IF NOT EXISTS `#__awco_ctl_tasks` (
 </div>
 <div class="column column__reference">
 
-### References
+### Referencias
 
 ![](./images/cover.png)
-Chapter 1
+Capítulo 1
 
 </div>
 </div>
@@ -196,14 +194,14 @@ Chapter 1
 ---
 
 <!--
-_header: "Adding some fake data"
+_header: "Añadiendo datos de prueba"
 -->
 
-Ask your favourite AI friend:
+Pregunta a tu AI (Amigo Imaginario) favorita:
 
-> Hi nice AI, I'm a web developer and I need some fake data for the Awesome To-Do list extension I'm building in Joomla. Could you please provide the SQL code around 30 rows that makes sense on a table created with this command and be sure that when there is no deadline date, you use NULL instead of an empty value:
+> Hola amigo imaginario favorito, soy un desarrollador web y necesito algunos datos de prueba para la extensión de lista de deseos que estoy creando para Joomla!. ¿Podrías por favor proporcionarme el código SQL para unas 30 filas de datos que tengan sentido para una tabla SQL creada con este comando SQL?:
 >
-> CREATE TABLE IF NOT EXISTS `#__clt_tasks` (
+> CREATE TABLE IF NOT EXISTS `#__aiwfc_deseos` (
     ...
 
 
@@ -216,7 +214,7 @@ Ask your favourite AI friend:
 
 ---
 <!--
-_header: "Understanding folder structure"
+_header: "Comprendiendo la estructura de directorios"
 -->
 <div class="url">https://developingextensionsforjoomla5.com/jdayes2024/live/1-bootstraping</div>
 <div class="columns">
@@ -236,10 +234,10 @@ _header: "Understanding folder structure"
 </div>
 <div class="column column__reference">
 
-### References
+### Referencias
 
 ![](./images/cover.png)
-Chapter 2
+Capítulo 2
 
 </div>
 </div>
@@ -286,10 +284,10 @@ _header: "Telling Joomla about our extension"
 </div>
 <div class="column column__reference">
 
-### References
+### Referencias
 
 ![](./images/cover.png)
-Chapters 2 and 14
+Capítulos 2 y 14
 
 </div>
 </div>
@@ -317,10 +315,10 @@ _header: "First install"
 </div>
 <div class="column column__reference">
 
-### References
+### Referencias
 
 ![](./images/cover.png)
-Chapter 2
+Capítulo 2
 
 </div>
 </div>
@@ -349,10 +347,10 @@ _header: "Registering our component"
 </div>
 <div class="column column__reference">
 
-### References
+### Referencias
 
 ![](./images/cover.png)
-Chapter 2
+Capítulo 2
 
 </div>
 </div>
@@ -378,9 +376,9 @@ _header: "Boot file for our component"
 </div>
 <div class="column column__reference">
 
-### References
+### Referencias
 ![](./images/cover.png)
-Chapter 2
+Capítulo 2
 
 </div>
 </div>
@@ -399,9 +397,9 @@ _header: "Adding the main controller"
 </div>
 <div class="column column__reference">
 
-### References
+### Referencias
 ![](./images/cover.png)
-Chapter 2
+Capítulo 2
 
 </div>
 </div>
@@ -421,9 +419,9 @@ _header: "Showing our default view"
 </div>
 <div class="column column__reference">
 
-### References
+### Referencias
 ![](./images/cover.png)
-Chapter 2
+Capítulo 2
 
 </div>
 </div>
@@ -446,9 +444,9 @@ _header: "Filling our view with data"
 </div>
 <div class="column column__reference">
 
-### References
+### Referencias
 ![](./images/cover.png)
-Chapter 2
+Capítulo 2
 
 </div>
 </div>
@@ -474,9 +472,9 @@ _header: "Adding the edit view"
 </div>
 <div class="column column__reference">
 
-### References
+### Referencias
 ![](./images/cover.png)
-Chapters 2 and 4
+Capítulos 2 y 4
 
 </div>
 </div>
