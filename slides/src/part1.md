@@ -86,12 +86,13 @@ Capítulo 1
 </div>
 
 <!--
-- We need to define a name and a purpose for our extension
-- This brings clarity and helps to stick to your plan
-- We also need a good name. It's not necessary for the code, but at least something you do not hate
-- We will get a shorter alias (as unique as possible) por our component
-- We do not need a company name, but it will be good to have some "main owner" for the namespaces
+- Necesitamos definir un nombre y un propósito para nuestra extensión.
+- Esto aporta claridad y ayuda a seguir el plan.
+- También necesitamos un buen nombre. No es necesario para el código, pero al menos algo que no odies.
+- Obtendremos un alias más corto (lo más único posible) para nuestro componente.
+- No necesitamos un nombre de empresa, pero sería bueno tener algún "propietario principal" para los espacios de nombres.
 -->
+
 
 ---
 <!--
@@ -100,7 +101,7 @@ _header: "Planificando el componente - Definiendo nuestros datos"
 <div class="columns">
 <div class="column column__content">
 
-### Task Entity
+### Una entidad llamada *Deseo*
 
 - Título
 - Descripcion
@@ -118,9 +119,9 @@ Capítulo 1
 </div>
 
 <!--
-- We need to identify the data entities in our extension
-- Data entities are all stuff that needs to be stored for later retrieval
-- We usually need Create, Read, Update and Delete permissions on entities
+- Necesitamos identificar las entidades de datos en nuestra extensión.
+- Las entidades de datos son todo aquello que necesita ser almacenado para su posterior recuperación.
+- Normalmente necesitamos permisos de Crear, Leer, Actualizar y Eliminar en las entidades.
 -->
 ---
 <!--
@@ -132,9 +133,9 @@ _header: "Planificando el componente"
 
 ## Posibles campos de nuestros deseos
 
-- *Autor?*
-- *Fecha de creación?*
-- *Cuánto lo quiero?*
+- *Autor*
+- *Fecha de creación*
+- *¿Cuánto lo quiero?*
 
 </div>
 <div class="column column__reference">
@@ -148,9 +149,9 @@ Capítulo 1
 </div>
 
 <!--
-- It's important to plan for the future and add all possible fields to our entity and create all possible entities
-- Do we need an owner (maybe), author (definitely will help)?
-- Do we need comments or follow-ups?
+- Es importante planificar para el futuro y añadir todos los campos posibles a nuestra entidad y crear todas las entidades posibles.
+- ¿Necesitamos un autor?
+- ¿Añadimos un campo de *Cuánto lo quiero*?
 -->
 ---
 <!--
@@ -159,13 +160,12 @@ _header: "Create the table in the database"
 <div class="columns">
 <div class="column column__content">
 
-Let's start with some code:
-
+Empezamos con el código:
 ~~~sql
 CREATE TABLE IF NOT EXISTS `#__aiwfc_deseos` (
     `id` INT(11) NOT NULL AUTO_INCREMENT,
     `titulo` VARCHAR(255) NULL,
-    `estate` TINYINT(1) NOT NULL DEFAULT 0,
+    `estado` TINYINT(1) NOT NULL DEFAULT 0,
     `descripcion` TEXT NOT NULL DEFAULT "",
     `creado` DATETIME NULL,
     `creado_por` INT(11) NULL,
@@ -186,10 +186,9 @@ Capítulo 1
 
 <!--
 
-- We may start creating the database structure for our component. In this code we replace the #_ characters with our Joomla DB prefix and we execute it in our DB
+- Podemos comenzar creando la estructura de la base de datos para nuestro componente. En este código, reemplazamos los caracteres #_ con nuestro prefijo de base de datos de Joomla y lo ejecutamos en nuestra base de datos.
 
-- You may check the prefix directly in the Database or in the backend: System -> Global Configuration: Tab Server, database section.
-
+- Puedes verificar el prefijo directamente en la base de datos o en el backend: Sistema -> Configuración Global: Pestaña Servidor, sección de la base de datos.
 -->
 ---
 
@@ -199,17 +198,16 @@ _header: "Añadiendo datos de prueba"
 
 Pregunta a tu AI (Amigo Imaginario) favorita:
 
-> Hola amigo imaginario favorito, soy un desarrollador web y necesito algunos datos de prueba para la extensión de lista de deseos que estoy creando para Joomla!. ¿Podrías por favor proporcionarme el código SQL para unas 30 filas de datos que tengan sentido para una tabla SQL creada con este comando SQL?:
+> Hola amigo imaginario favorito, soy un desarrollador web y necesito algunos datos de prueba para la extensión de lista de deseos de Navidad que estoy creando para Joomla!. ¿Podrías por favor proporcionarme el código SQL para unas 30 filas de datos que tengan sentido para una tabla SQL creada con este comando SQL?:
 >
 > CREATE TABLE IF NOT EXISTS `#__aiwfc_deseos` (
     ...
 
 
 <!--
-- In chapter 1 of the book you have some directions on how to build the scritps to generate test data and the code for those is at Github
-- With our simple structure we are just asking AI to provide the data.
-- In case any of you is asking about the politeness of my question, please remember Terminator movie.
-- Finally we insert this data into our DB
+- En el capítulo 1 del libro tienes algunas indicaciones sobre cómo construir los scripts para generar datos de prueba y el código para esos scripts está en Github.
+- Con nuestra estructura simple, solo estamos pidiendo a la IA que proporcione los datos.
+- Finalmente, insertamos estos datos en nuestra base de datos.
 -->
 
 ---
@@ -220,7 +218,8 @@ _header: "Comprendiendo la estructura de directorios"
 <div class="columns">
 <div class="column column__content">
 
-- administrator/components/com_ctl/
+~~~
+- administrator/components/com_aiwfc/
     - services
     - tmpl
     - src
@@ -229,7 +228,7 @@ _header: "Comprendiendo la estructura de directorios"
         - Model
         - View
         - Table
-
+~~~
 
 </div>
 <div class="column column__reference">
@@ -243,22 +242,20 @@ Capítulo 2
 </div>
 
 <!-- 
+- Nuestro componente estará ubicado en la carpeta **components** del backend, así que lo creamos en nuestra instalación de Joomla.
+- Dentro de esta carpeta creamos los subdirectorios:
 
-- Our component will be located in the components folder of the backend soso we create it in our Joomla installation
-- Inside this folder we create the subfolders
-
-- services: It hosts the provider.php file which defines the services we use in our component
-
-- src: It's where your logic lives. In this folder we will place our models and all the code that make things work
-
-- tmpl: It's where we place the html templates for our views
-
+- **services**: Aquí se encuentra el archivo **provider.php**, que define los servicios que usamos en nuestro componente.
+  
+- **src**: Es donde reside tu lógica. En esta carpeta colocaremos nuestros modelos y todo el código que hace que las cosas funcionen.
+  
+- **tmpl**: Aquí es donde colocamos los layouts de nuestras vistas.
 -->
 
 ---
 
 <!--
-_header: "Telling Joomla about our extension"
+_header: "Presentando nuestra extensión a Joomla!"
 -->
 
 <div class="columns">
@@ -267,15 +264,15 @@ _header: "Telling Joomla about our extension"
 ~~~xml
 <extension type="component" method="upgrade">
 ...
-    <namespace path="src">AwCo\Component\Ctl</namespace>
+    <namespace path="src">Languero\Component\Aiwfc</namespace>
     <administration>
         <files folder="admin">
             <folder>services</folder>
             <folder>src</folder>
             <folder>tmpl</folder>
         </files>
-        <menu link="option=COM_CTL" img="class:default">
-            Clear To-Do List
+        <menu link="option=COM_AIWFC" img="class:default">
+            All I Want for Christmas
         </menu>
     </administration>
 </extension>
@@ -294,23 +291,24 @@ Capítulos 2 y 14
 
 <!--
 
-- Manifest file should have the same name as our short alias
-- We have a first part of MetaData where we declare who we are
-- We declare the namespace for our component and where is located in our structure
-- Full explanation of the file in chapter 14 of the book
+- El archivo de manifiesto debe tener el mismo nombre que nuestro alias corto.
+- Tenemos una primera parte de metadatos donde declaramos quiénes somos.
+- Declaramos el espacio de nombres para nuestro componente y dónde se encuentra en nuestra estructura.
+- La explicación completa del archivo está en el capítulo 14 del libro.
 
 -->
 
 ---
 
 <!--
-_header: "First install"
+_header: "Primera instalación"
 -->
 
 <div class="columns">
 <div class="column column__content">
 
-- We use the nice *Discover* function at Joomla! Backend
+- Usamos la maravillosa función  **Descubrir** de Joomla!:
+  - **Sistema** -> *Instalar extensiones* -> **Descubrir**
 
 </div>
 <div class="column column__reference">
@@ -325,24 +323,24 @@ Capítulo 2
 
 <!--
 
-- We have the bare minimum to install the extension
-- This will create the menu entry and the Database stuff
-- Trying to access the component will give an error
+- Tenemos lo mínimo necesario para instalar la extensión.
+- Esto creará la entrada del menú y los elementos de la base de datos.
+- Intentar acceder al componente dará un error.
 
 -->
 
 ---
 
 <!--
-_header: "Registering our component"
+_header: "Empezando nuestro componente"
 -->
 
 <div class="columns">
 <div class="column column__content">
 
-- File *services/provider.php*
-- Dependency Injection Container pattern
-- We inject the MVCFactory service
+- Fichero *services/provider.php*
+- Seguimos el patrón de inyección de dependencias en el contenedor (Dependency Injection Container - DIC)
+- Inyectamos el servicio MVCFactory
 
 </div>
 <div class="column column__reference">
@@ -356,22 +354,23 @@ Capítulo 2
 </div>
 
 <!--
-- Since Joomla! 4 we use DIC pattern to simplify dependencies and create a more robust platform
-- Copy and paste this Whenever possible
+- Desde Joomla! 4, utilizamos el patrón DIC para simplificar las dependencias y crear una plataforma más robusta.
+- Copia y pega todo lo que puedas si no sabes lo que haces.
+- ¿Por qué tanto código base para una extensión? - Fácil, porque no somos animales
 -->
 
 ---
 
 <!--
-_header: "Boot file for our component"
+_header: "Fichero de arranque de nuestro componente"
 -->
 
 <div class="columns">
 <div class="column column__content">
 
-- At *src/Extension/CtlComponent.php*
-- Joomla Will look for this file first
-- It implements the *boot()* method
+- En `src/Extension/CtlComponent.php`
+- Joomla buscará este fichero para comenzar
+- Implementa el método `boot()`
 
 </div>
 <div class="column column__reference">
@@ -385,14 +384,14 @@ Capítulo 2
 
 ---
 <!--
-_header: "Adding the main controller"
+_header: "Añadiendo el controlador principal"
 -->
 
 <div class="columns">
 <div class="column column__content">
 
-- At *src/Controller/DisplayController.php*
-- We define the default view in this code
+- En  `src/Controller/DisplayController.php*`
+- Definimos la vista por defecto en este código
 
 </div>
 <div class="column column__reference">
@@ -412,9 +411,11 @@ _header: "Showing our default view"
 <div class="columns">
 <div class="column column__content">
 
-- In Joomla's MVC we trust!!
-- When we just retrieve data: View + Model
-- When we perform actions: View + Model + Controller
+- EL MVC de Joomla! es mi señor, ¡¡Nada me falta!!
+- Cuando solo obtenemos datos: Vista + Modelo
+- Cuando vamos a ejecutar aciones: Vista + Modelo + Controlador
+- Creamos nuestra carpeta ``View`` con la subcarpet ``Deseos``.
+- Creamos el archivo ``src/tmpl/deseos/default.php``.
 
 </div>
 <div class="column column__reference">
@@ -427,19 +428,19 @@ Capítulo 2
 </div>
 
 <!--
-- We create our View folder with the subfolder *Tasks*
-- We create our *src/tmpl/tasks/default.php* file.
+- Creamos nuestra carpeta ``View`` con la subcarpet ``Deseos``.
+- Creamos el archivo ``src/tmpl/deseos/default.php``.
 -->
 ---
 <!--
-_header: "Filling our view with data"
+_header: "Añadiendo datos a nuestra vista"
 -->
 <div class="url">https://developingextensionsforjoomla5.com/jdayes2024/live/2-listview</div>
 <div class="columns">
 <div class="column column__content">
 
-- Joomla View file structure is the same, we just retrieve and pass different types of data
-- We use the view proxy methods to retrieve the data from the model
+- La estructura de archivos de la vista de Joomla! es la misma, solo recuperamos y pasamos diferentes tipos de datos.
+- Usamos los métodos del proxy de la vista para recuperar los datos del modelo.
 
 </div>
 <div class="column column__reference">
@@ -452,22 +453,22 @@ Capítulo 2
 </div>
 
 <!--
-- We must create the Model to get our list of tasks
-- Joomla MVC makes things really easy 
-- We add code to our tmpl file
+- Debemos crear el modelo para obtener nuestra lista de deseos.
+- El MVC de Joomla facilita mucho las cosas.
+- Añadimos código a nuestro archivo ``tmpl``.
 -->
 
 ---
 <!--
-_header: "Adding the edit view"
+_header: "Añadiendo la vista de edición"
 -->
 <div class="url">https://developingextensionsforjoomla5.com/jdayes2024/live/3-editview</div>
 <div class="columns">
 <div class="column column__content">
 
-- We use the same View for *edit* and *add* actions
-- For individual items we do not use a query, but the Table class
-- We use JForms to easily create the form
+- Usamos la misma vista para las acciones de **editar** y **agregar**.
+- Para los elementos individuales no usamos una consulta, sino la clase ``Table``.
+- Usamos la clase ``Forms`` para crear el formulario de manera sencilla.
 
 </div>
 <div class="column column__reference">
@@ -481,42 +482,41 @@ Capítulos 2 y 4
 
 <!--
 
-- We create our View
-- We add our first Toolbar in the view
-- We create our Model exnteding AdminModel
-- We create the file src/Table/TaskTable.php
-- We create the file forms/task.xml
-- We add a link to the task title for editing
+- Creamos nuestra vista.
+- Añadimos nuestra primera barra de herramientas en la vista.
+- Creamos nuestro modelo extendiendo **AdminModel**.
+- Creamos el archivo **src/Table/DeseoTable.php**.
+- Creamos el archivo **forms/deseo.xml**.
+- Añadimos un enlace al título de la tarea para editar.
 
 -->
 ---
 <!--
-_header: "Nice-to-haves"
+_header: "Cosas chulas que podríamos añadir"
 -->
 
-- Toolbar for the list view
+- Barra de herramientas para la vista de lista
 - ACL
-- Frontend part
-- Component configuration
-- Calendar field
-- Create a companion module (Check Shirat's presentation on the topic)
+- Parte pública
+- Zona de configuración del Componente
+- Crear un módulo complementario de lista de tareas
 
 ---
 
 <!--
-_header: "on the shoulder of giants"
+_header: "En brazos de gigantes"
 -->
 
-- Joomla Extension Development by Nicholas Dionysopoulos
+- Libro online *Joomla Extension Development* by Nicholas Dionysopoulos
   - https://www.dionysopoulos.me/book.html
-- Joomla 4 – Developing Extensions: Step by step to an working Joomla extension
+- Libro de Astrid: *Joomla 4 – Developing Extensions: Step by step to an working Joomla extension*
   - https://a.co/d/1BIVa8j
   - https://web.archive.org/web/20230518080457/https://blog.astrid-guenther.de/en/der-weg-zu-joomla4-erweiterungen/
 
-- Joomla! Documentation
+- Documentación Joomla! para programadores
   - https://manual.joomla.org
 
-  <!-- I have not seen furhther but I definitely was on the shoulders of giants.-->
+  <!-- Si vi más lejos que otros hombres es porque estaba subido a hombros de gigantes. -->
 
 ---
 <!--
@@ -525,5 +525,5 @@ footer: ''
 -->
 
 <div class="text-huge">
-    Thank you!
+    ¡Gracias!
 </div>
