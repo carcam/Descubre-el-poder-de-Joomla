@@ -23,12 +23,12 @@ footer: '[Developing Extensions for Joomla! 5](https://developingextensionsforjo
 - Obsesionado con la productividad
 - Actualmente Coordinador de Operaciones en Joomla!
 - Apasionado de la Navidad
-- 3 niños, 2 perros, <strike>1 gato</strike> 2 gatos y una esposa que adoro
+- 3 niños, 2 perros, ~~1 gato~~ 2 gatos y una esposa que adoro
 
 </div>
 <div class="column">
 
-![width:500px](./images/2023.jpg)
+![width:500px](./images/me.jpeg)
 
 ## Carlos Cámara
 
