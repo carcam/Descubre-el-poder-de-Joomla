@@ -42,7 +42,7 @@ _header: "Lo que vamos a ver"
 footer: '[Developing Extensions for Joomla! 5](https://developingextensionsforjoomla5.com/jdayes2024)'
 -->
 
-## Parte 1: Desarrollar una aplicación de <strike>lista de tareas</strike> lista de deseos para Navidad
+## Parte 1: Desarrollar una aplicación de ~~lista de tareas~~ lista de deseos para Navidad
 1. Planificando el componente
 2. Creando las tablas en la base de datos
 3. Entendiendo la estructura de carpetas
