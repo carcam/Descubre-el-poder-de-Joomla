@@ -6,9 +6,38 @@ use Joomla\CMS\Router\Route;
 
 ?>
 <?php if ($this->items) :?>
-
-    Algo no va bien...
-
+<form action="<?php echo Route::_('index.php?option=com_aiwfc&view=deseos'); ?>" method="post" name="adminForm" id="adminForm">
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <caption>Lista de deseos</caption>
+            <thead>
+                <tr>
+                    <td>ID</td>
+                    <td>Deseo</td>
+                    <td>Creado</td>
+                </tr>
+            </thead>
+            <tfoot>
+                <?php echo $this->pagination->getListFooter(); ?>
+            </tfoot>
+            <tbody>
+                <?php foreach ($this->items as $task) :?>
+                <tr>
+                    <td><?php echo $task->id;?></td>
+                    <td>
+                        <div class="item-title">
+                                <?php echo $task->titulo;?>
+                        </div>
+                        <p class="item-description"><?php echo $task->descripcion;?></p>
+                    </td>
+                    <td><?php echo $task->creado;?></td>
+                </tr>
+                <?php endforeach;?>
+            </tbody>
+        </table>
+    </div>
+    <input type="hidden" name="task" value="">
+</form>
 <?php else : ?>
 <div class="text-large">
     <p>No tienes deseos. Recuerda que:</p>

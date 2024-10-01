@@ -634,8 +634,23 @@ _header: "Añadiendo datos a nuestra vista"
 <div class="columns">
 <div class="column column__content">
 
-- La estructura de archivos de la vista de Joomla! es la misma, solo recuperamos y pasamos diferentes tipos de datos.
-- Usamos los métodos del proxy de la vista para recuperar los datos del modelo.
+Modificamos el método `display()` de la vista: `src/View/Deseos/HtmlView`:
+
+```php
+public function display($tpl=null): void
+{
+    $this->state = $this->get('State');
+    $this->items = $this->get('Items');
+    $this->pagination = $this->get('Pagination');
+
+    if (count($errors = $this->get('Errors'))) {
+        throw new GenericDataException(implode('\n', $errors), 500);
+    }
+
+    parent::display($tpl);
+}
+```
+
 
 </div>
 <div class="column column__reference">
@@ -648,8 +663,131 @@ Capítulo 2
 </div>
 
 <!--
+- La estructura de archivos de la vista de Joomla! es la misma, solo recuperamos y pasamos diferentes tipos de datos.
+- Usamos los métodos del proxy de la vista para recuperar los datos del modelo.
+-->
+---
+
+<div class="columns">
+<div class="column column__content">
+
+Creamos el modelo en: `src/Model/DeseosModel.php`:
+
+```php
+
+<?php
+
+namespace Langulero\Component\Aiwfc\Administrator\Model;
+
+use Joomla\CMS\MVC\Model\ListModel;
+use Joomla\CMS\Factory;
+
+\defined('_JEXEC') or die;
+
+class DeseosModel extends ListModel
+{
+    protected function getListQuery()
+    {
+        $db	= $this->getDatabase();
+        $query = $db->getQuery(true);
+        $query->select(
+            $this->getState('list.select',
+                [
+                    $db->quoteName('a.id'),
+                    $db->quoteName('a.titulo'),
+                    $db->quoteName('a.estado'),
+                    $db->quoteName('a.creado'),
+                ]
+            )
+        )->from($db->quoteName('#__aiwfc_deseos', 'a'));
+
+        $orderCol = $this->state->get('list.ordering', 'a.creado');
+        $orderDirn = $this->state->get('list.direction', 'ASC');
+        $query->order($db->escape($orderCol) . ' ' . $db->escape($orderDirn));
+
+        return $query;
+    }
+}
+
+```
+
+
+</div>
+<div class="column column__reference">
+
+### Referencias
+![](./images/cover.png)
+Capítulo 2
+
+</div>
+</div>
+
+<!--
+- La estructura de archivos de la vista de Joomla! es la misma, solo recuperamos y pasamos diferentes tipos de datos.
+- Usamos los métodos del proxy de la vista para recuperar los datos del modelo.
 - Debemos crear el modelo para obtener nuestra lista de deseos.
 - El MVC de Joomla facilita mucho las cosas.
+- Añadimos código a nuestro archivo ``tmpl``.
+-->
+---
+
+<div class="columns">
+<div class="column column__content">
+
+Modificamos nuestro layout: `tmpl/deseos/default.php`:
+```php
+use Joomla\CMS\Router\Route;
+
+?>
+<?php if ($this->items) :?>
+<form action="<?php echo Route::_('index.php?option=com_aiwfc&view=deseos'); ?>" method="post" name="adminForm" id="adminForm">
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <caption>Lista de deseos</caption>
+            <thead>
+                <tr>
+                    <td>ID</td>
+                    <td>Deseo</td>
+                    <td>Creado</td>
+                </tr>
+            </thead>
+            <tfoot>
+                <?php echo $this->pagination->getListFooter(); ?>
+            </tfoot>
+            <tbody>
+                <?php foreach ($this->items as $task) :?>
+                <tr>
+                    <td><?php echo $task->id;?></td>
+                    <td>
+                        <div class="item-title">
+                                <?php echo $task->titulo;?>
+                        </div>
+                        <p class="item-description"><?php echo $task->descripcion;?></p>
+                    </td>
+                    <td><?php echo $task->creado;?></td>
+                </tr>
+                <?php endforeach;?>
+            </tbody>
+        </table>
+    </div>
+    <input type="hidden" name="task" value="">
+</form>
+...
+<?php endif;?>
+```
+
+
+</div>
+<div class="column column__reference">
+
+### Referencias
+![](./images/cover.png)
+Capítulo 2
+
+</div>
+</div>
+
+<!--
 - Añadimos código a nuestro archivo ``tmpl``.
 -->
 
