@@ -21,16 +21,18 @@ use Joomla\CMS\Router\Route;
                 <?php echo $this->pagination->getListFooter(); ?>
             </tfoot>
             <tbody>
-                <?php foreach ($this->items as $task) :?>
+                <?php foreach ($this->items as $item) :?>
                 <tr>
-                    <td><?php echo $task->id;?></td>
+                    <td><?php echo $item->id;?></td>
                     <td>
                         <div class="item-title">
-                                <?php echo $task->titulo;?>
+                            <a href="<?php echo Route::_('index.php?option=com_aiwfc&view=deseo&task=edit&id=' . (int) $item->id); ?>">
+                                <?php echo $item->titulo;?>
+                            </a>
                         </div>
-                        <p class="item-description"><?php echo $task->descripcion;?></p>
+                        <p class="item-description"><?php echo $item->descripcion;?></p>
                     </td>
-                    <td><?php echo $task->creado;?></td>
+                    <td><?php echo $item->creado;?></td>
                 </tr>
                 <?php endforeach;?>
             </tbody>

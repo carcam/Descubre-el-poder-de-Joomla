@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form>
+    <field name="id" type="hidden" />
+    <field name="titulo" type="text" label="Título" required="true" />
+    <field name="descripcion" type="editor" label="Descripción" required="false" />
+    <field name="creado" type="text" label="Creado en" required="false" />
+    <field name="created_by" type="user" label="Creado por" />
+</form>

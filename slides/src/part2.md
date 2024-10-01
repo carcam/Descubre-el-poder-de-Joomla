@@ -7,11 +7,11 @@ theme: book
 _class: cover 
 -->
 
-![bg contain](./images/ccamara.png)
+![bg contain](./images/portada.png)
 
 ---
 <!--
-_header: "Por qué estoy aquí"
+_header: "Lo que ya hemos visto"
 footer: '[Developing Extensions for Joomla! 5](https://developingextensionsforjoomla5.com/jdayusa2024)'
 -->
 
@@ -27,9 +27,280 @@ _header: "Lo que vamos a ver"
 -->
 
 ## Parte 2: Desarrollando nuestro servicio web
+1. Editando nuestros deseos
 1. Introducción a los servicios web
 2. Enrutando nuestro servicio web
 3. ¡A divertirse!
+
+---
+
+<!--
+_header: "Editando deseos"
+-->
+
+<div class="columns">
+<div class="column column__content">
+
+- Fichero: `src/Controller/DeseoController.php`
+
+```php
+<?php
+
+namespace Langulero\Component\Aiwfc\Administrator\Controller;
+
+use Joomla\CMS\MVC\Controller\FormController;
+
+\defined('_JEXEC') or die;
+
+class DeseoController extends FormController
+{
+}
+```
+
+
+</div>
+<div class="column column__reference">
+
+### Referencias
+![](./images/cover.png)
+Capítulo 2
+
+</div>
+</div>
+
+<!--
+- Empezamos definiendo el controlador de nuestra entidad
+-->
+
+---
+
+<!--
+_header: "Editando deseos"
+-->
+
+<div class="columns">
+<div class="column column__content">
+
+- Fichero: `src/Model/DeseoModel.php`
+
+```php
+<?php
+
+namespace Langulero\Component\Aiwfc\Administrator\Model;
+
+use Joomla\CMS\MVC\Model\AdminModel;
+use Joomla\CMS\Factory;
+
+\defined('_JEXEC') or die;
+
+class DeseoModel extends AdminModel
+{
+    public function getForm($data = array(), $loadData = true)
+    {
+        $form = $this->loadForm(
+            'com_aiwfc.deseo',
+            'deseo',
+            [
+                'control' => 'jform',
+                'load_data' => $loadData
+            ]
+        );
+        
+            if (empty($form)) {
+            return false;
+        }
+
+        return $form;
+    }
+
+    protected function loadFormData()
+	{
+		$app = Factory::getApplication();
+		$data = $app->getUserState(
+			'com_aiwfc.edit.deseo.data',
+			[]
+		);
+		if (empty($data)) {
+			$data = $this->getItem();
+		}
+		return $data;
+    }
+}
+```
+
+
+</div>
+<div class="column column__reference">
+
+### Referencias
+![](./images/cover.png)
+Capítulo 2
+
+</div>
+</div>
+
+<!--
+- Empezamos definiendo el controlador de nuestra entidad
+-->
+
+
+---
+
+<!--
+_header: "Editando deseos"
+-->
+
+<div class="columns">
+<div class="column column__content">
+
+- Fichero: `src/View/Deseo/HtmlView.php`
+
+```php
+
+<?php
+namespace Langulero\Component\Aiwfc\Administrator\View\deseo;
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Toolbar\Toolbar;
+use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\MVC\View\GenericDataException;
+use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
+
+\defined('_JEXEC') or die;
+
+class HtmlView extends BaseHtmlView
+{
+    public $state;
+    public $item;
+    public $form;
+
+    public function display($tpl = null): void
+    {
+        $this->form = $this->get('Form');
+        $this->state = $this->get('State');
+        $this->item = $this->get('Item');
+
+        if (count($errors = $this->get('Errors'))) {
+            throw new GenericDataException(implode('\n', $errors), 500);
+        }
+
+        $this->addToolbar();
+
+        parent::display($tpl);
+    }
+
+    protected function addToolbar()
+    {
+        Factory::getApplication()->input->set('hidemainmenu', true);
+
+        $isNew = ($this->item->id == 0);
+        $toolbar = Toolbar::getInstance();
+
+        ToolbarHelper::title(($isNew ? 'Add' : 'Edit'));
+
+        if ($isNew) {
+            $toolbar->apply('deseo.save');
+        } else {
+            $toolbar->apply('deseo.apply');
+        }
+        $toolbar->save('deseo.save');
+
+        $toolbar->cancel('deseo.cancel', 'JTOOLBAR_CLOSE');
+    }
+}
+```
+
+</div>
+<div class="column column__reference">
+
+### Referencias
+![](./images/cover.png)
+Capítulo 2
+
+</div>
+</div>
+
+<!--
+- Empezamos definiendo el controlador de nuestra entidad
+-->
+
+---
+<!--
+_header: "Editando deseos"
+-->
+<div class="columns">
+<div class="column column__content">
+
+Añadimos nuestor formulario: `forms/deseo.xml`.
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<form>
+    <field name="id" type="hidden" />
+    <field name="titulo" type="text" label="Título" required="true" />
+    <field name="descripcion" type="editor" label="Descripción" required="false" />
+    <field name="creado" type="text" label="Creado en" required="false" />
+    <field name="created_by" type="user" label="Creado por" />
+</form>
+
+```
+
+
+</div>
+<div class="column column__reference">
+
+### References
+
+![](./images/cover.png)
+
+Capítulo 2
+
+</div>
+</div>
+
+---
+<!--
+_header: "Editando deseos"
+-->
+<div class="columns">
+<div class="column column__content">
+
+Modificamos el layout del listado: `tmpl/deseos/default.php`.
+
+Reemplazando:
+
+```html
+<div class="item-title">
+    <?php echo $item->name; ?>
+</div>
+```
+
+Por esto:
+
+```php
+use Joomla\CMS\Router\Route;
+```
+
+```html
+<div class="item-title">
+  <a href="<?php echo Route::_('index.php?option=com_aiwfc&view=deseo&task=edit&id=' . (int) $item->id); ?>">
+      <?php echo $task->titulo;?>
+  </a>
+</div>
+```
+
+
+</div>
+<div class="column column__reference">
+
+### References
+
+![](./images/cover.png)
+
+Capítulo 2
+
+</div>
+</div>
 
 ---
 
