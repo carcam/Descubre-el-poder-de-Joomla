@@ -7,7 +7,7 @@ theme: book
 _class: cover 
 -->
 
-![bg contain](./images/ccamara.png)
+![bg contain](./images/portada.png)
 
 ---
 
@@ -70,7 +70,7 @@ Objetivo: **Aplicación de lista de deseos para el Backend de Joomla!**
 
 Nombre del componente: **All I want for Christmas**
 Alias: **com_*aiwfc***
-Company: **Langulero** (L'Angulero SL)
+Empresa: **Langulero** (L'Angulero SL)
 
 Otras cositas: **Licencia**, formas de distribución, hoja de ruta...
 
@@ -102,10 +102,15 @@ _header: "Planificando el componente - Definiendo nuestros datos"
 <div class="column column__content">
 
 ### Una entidad llamada *Deseo*
+<div class="container_center">
 
-- Título
-- Descripcion
-- Estado
+|Deseo|
+---
+| Título |
+| Descripción |
+| Estado |
+
+</div>
 
 </div>
 <div class="column column__reference">
@@ -209,6 +214,23 @@ Pregunta a tu AI (Amigo Imaginario) favorita:
 - Con nuestra estructura simple, solo estamos pidiendo a la IA que proporcione los datos.
 - Finalmente, insertamos estos datos en nuestra base de datos.
 -->
+---
+<!--
+_header: "Añadiendo datos de prueba"
+-->
+
+```sql
+INSERT INTO `#__aiwfc_deseos` (`titulo`, `estado`, `descripcion`, `creado`, `creado_por`) VALUES
+('Un nuevo abrigo de invierno', 0, 'Un abrigo cálido y moderno para el invierno', '2024-09-01 12:00:00', 1),
+('Juguetes para los niños', 0, 'Regalos de Navidad para los más pequeños', '2024-09-02 09:15:00', 2),
+('Un libro de cocina gourmet', 1, 'Recetas gourmet para sorprender en Navidad', '2024-09-05 14:30:00', 3),
+...
+;
+```
+
+Descarga el fichero de datos completo en:
+
+[https://github.com/carcam/Descubre-el-poder-de-Joomla](https://github.com/carcam/Descubre-el-poder-de-Joomla/blob/a69f42bfb25168243af72f21a53da7da4d7fd71d/mock-data/deseos.sql)
 
 ---
 <!--
@@ -261,6 +283,8 @@ _header: "Presentando nuestra extensión a Joomla!"
 <div class="columns">
 <div class="column column__content">
 
+Fichero `aiwfc.xml`:
+
 ~~~xml
 <extension type="component" method="upgrade">
 ...
@@ -310,6 +334,12 @@ _header: "Primera instalación"
 - Usamos la maravillosa función  **Descubrir** de Joomla!:
   - **Sistema** -> *Instalar extensiones* -> **Descubrir**
 
+<div class="container_center">
+
+![width:500px](./images/discover.png)
+
+</div>
+
 </div>
 <div class="column column__reference">
 
@@ -338,9 +368,41 @@ _header: "Empezando nuestro componente"
 <div class="columns">
 <div class="column column__content">
 
-- Fichero *services/provider.php*
-- Seguimos el patrón de inyección de dependencias en el contenedor (Dependency Injection Container - DIC)
-- Inyectamos el servicio MVCFactory
+Fichero `services/provider.php`:
+
+```php
+<?php
+
+\defined('_JEXEC') or die('');
+
+use Joomla\CMS\Dispatcher\ComponentDispatcherFactoryInterface;
+use Joomla\CMS\Extension\ComponentInterface;
+use Joomla\CMS\Extension\Service\Provider\ComponentDispatcherFactory;
+use Joomla\CMS\Extension\Service\Provider\MVCFactory;
+use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\DI\Container;
+use Joomla\DI\ServiceProviderInterface;
+use Langulero\Component\Aiwfc\Administrator\Extension\AiwfcComponent;
+
+return new class implements ServiceProviderInterface
+{
+    public function register(Container $container)
+    {
+        $container->registerServiceProvider(new MVCFactory('\\Langulero\\Component\\Aiwfc'));
+        $container->registerServiceProvider(new ComponentDispatcherFactory('\\Langulero\\Component\\Aiwfc'));
+        $container->set(
+            ComponentInterface::class,
+            function (Container $container) {
+                $component = new AiwfcComponent($container->get(ComponentDispatcherFactoryInterface::class));
+                $component->setMVCFactory($container->get(MVCFactoryInterface::class));
+                return $component;
+            }
+        );
+    }
+};
+
+``` 
+
 
 </div>
 <div class="column column__reference">
@@ -354,6 +416,9 @@ Capítulo 2
 </div>
 
 <!--
+- Fichero *services/provider.php*
+- Seguimos el patrón de inyección de dependencias en el contenedor (Dependency Injection Container - DIC)
+- Inyectamos el servicio MVCFactory
 - Desde Joomla! 4, utilizamos el patrón DIC para simplificar las dependencias y crear una plataforma más robusta.
 - Copia y pega todo lo que puedas si no sabes lo que haces.
 - ¿Por qué tanto código base para una extensión? - Fácil, porque no somos animales
@@ -368,9 +433,25 @@ _header: "Fichero de arranque de nuestro componente"
 <div class="columns">
 <div class="column column__content">
 
-- En `src/Extension/CtlComponent.php`
-- Joomla buscará este fichero para comenzar
-- Implementa el método `boot()`
+- Fichero `src/Extension/AiwfcComponent.php`
+
+```php
+<?php
+namespace Langulero\Component\Aiwfc\Administrator\Extension;
+
+use Joomla\CMS\Extension\BootableExtensionInterface;
+use Joomla\CMS\Extension\MVCComponent;
+use Psr\Container\ContainerInterface;
+
+\defined('_JEXEC') or die;
+
+class AiwfcComponent extends MVCComponent implements BootableExtensionInterface
+{
+    public function boot(ContainerInterface $container) {}
+}
+
+```
+
 
 </div>
 <div class="column column__reference">
@@ -382,6 +463,10 @@ Capítulo 2
 </div>
 </div>
 
+<!--
+- Joomla buscará este fichero para comenzar
+- Implementa el método `boot()`
+-->
 ---
 <!--
 _header: "Añadiendo el controlador principal"
@@ -390,8 +475,23 @@ _header: "Añadiendo el controlador principal"
 <div class="columns">
 <div class="column column__content">
 
-- En  `src/Controller/DisplayController.php*`
-- Definimos la vista por defecto en este código
+- Fichero: `src/Controller/DisplayController.php`
+
+```php
+<?php
+
+namespace Langulero\Component\Aiwfc\Administrator\Controller;
+
+use Joomla\CMS\MVC\Controller\BaseController;
+
+\defined('_JEXEC') or die;
+
+class DisplayController extends BaseController
+{
+    protected $default_view = 'Deseos';
+}
+```
+
 
 </div>
 <div class="column column__reference">
@@ -403,19 +503,63 @@ Capítulo 2
 </div>
 </div>
 
+<!--
+- Definimos la vista por defecto en este código
+-->
 ---
 <!--
-_header: "Showing our default view"
+_header: "Mostrando nuestra vista predeterminada"
 -->
 
 <div class="columns">
 <div class="column column__content">
 
 - EL MVC de Joomla! es mi señor, ¡¡Nada me falta!!
-- Cuando solo obtenemos datos: Vista + Modelo
-- Cuando vamos a ejecutar aciones: Vista + Modelo + Controlador
-- Creamos nuestra carpeta ``View`` con la subcarpet ``Deseos``.
-- Creamos el archivo ``src/tmpl/deseos/default.php``.
+- Cuando **solo obtenemos datos**: Vista + Modelo
+- Cuando vamos a **ejecutar aciones**: Vista + Modelo + Controlador
+
+</div>
+<div class="column column__reference">
+
+### Referencias
+![](./images/cover.png)
+Capítulo 2
+
+</div>
+</div>
+
+---
+<!--
+_header: "Mostrando nuestra vista predeterminada"
+-->
+
+<div class="columns">
+<div class="column column__content">
+
+Fichero: `src/View/Deseos/HtmlView.php`:
+
+```php
+<?php
+
+namespace Langulero\Component\Aiwfc\Administrator\View\Deseos;
+
+use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
+
+\defined('_JEXEC') or die;
+
+class HtmlView extends BaseHtmlView
+{
+    public $state;
+    public $items=[];
+    public $pagination;
+
+    public function display($tpl=null): void
+    {
+        parent::display($tpl);
+    }
+
+}
+```
 
 </div>
 <div class="column column__reference">
@@ -428,10 +572,61 @@ Capítulo 2
 </div>
 
 <!--
-- Creamos nuestra carpeta ``View`` con la subcarpet ``Deseos``.
-- Creamos el archivo ``src/tmpl/deseos/default.php``.
+- Creamos nuestra carpeta ``View`` con la subcarpeta ``Deseos``.
 -->
 ---
+<!--
+_header: "Mostrando nuestra vista predeterminada"
+-->
+
+<div class="columns">
+<div class="column column__content">
+
+Fichero `tmpl/deseos/default.php`:
+
+```php
+<?php
+
+use Joomla\CMS\Router\Route;
+
+\defined('_JEXEC') or die;
+
+?>
+<?php if ($this->items) :?>
+
+ Algo no va bien...
+
+<?php else : ?>
+
+  <div class="text-large">
+      <p>No tienes deseos. Recuerda que:</p>
+      <blockquote cite="https://es.wikiquote.org/wiki/Deseo#cite_ref-senor135-9_2-2">
+          Antes de desear ardientemente una cosa, debemos asegurarnos de la felicidad que nos dará cuando la tengamos.
+          <footer>
+              <a href="">François de La Rochefoucauld</a>
+          </footer>
+      </blockquote>
+  </div>
+
+<?php endif;?>
+```
+
+</div>
+<div class="column column__reference">
+
+### Referencias
+![](./images/cover.png)
+Capítulo 2
+
+</div>
+</div>
+
+<!--
+- Como no hemos programado cómo obtener los elementos de nuestra lista, se mostrará la frase.
+-->
+
+---
+
 <!--
 _header: "Añadiendo datos a nuestra vista"
 -->
@@ -495,6 +690,7 @@ Capítulos 2 y 4
 _header: "Cosas chulas que podríamos añadir"
 -->
 
+- Frase aleatoria sobre el deseo de WikiQuote cuando no hay deseos
 - Barra de herramientas para la vista de lista
 - ACL
 - Parte pública
@@ -510,8 +706,8 @@ _header: "En brazos de gigantes"
 - Libro online *Joomla Extension Development* by Nicholas Dionysopoulos
   - https://www.dionysopoulos.me/book.html
 - Libro de Astrid: *Joomla 4 – Developing Extensions: Step by step to an working Joomla extension*
-  - https://a.co/d/1BIVa8j
-  - https://web.archive.org/web/20230518080457/https://blog.astrid-guenther.de/en/der-weg-zu-joomla4-erweiterungen/
+  - [Disponible en Amazon](https://a.co/d/1BIVa8j)
+  - [Disponible en Web Archive](https://web.archive.org/web/20230518080457/https://blog.astrid-guenther.de/en/der-weg-zu-joomla4-erweiterungen/)
 
 - Documentación Joomla! para programadores
   - https://manual.joomla.org
@@ -520,10 +716,7 @@ _header: "En brazos de gigantes"
 
 ---
 <!--
-_class: thank-you
-footer: ''
+_class: cover 
 -->
 
-<div class="text-huge">
-    ¡Gracias!
-</div>
+![bg contain](./images/end.png)
