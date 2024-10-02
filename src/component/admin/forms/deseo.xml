@@ -3,6 +3,6 @@
     <field name="id" type="hidden" />
     <field name="titulo" type="text" label="Título" required="true" />
     <field name="descripcion" type="editor" label="Descripción" required="false" />
-    <field name="creado" type="text" label="Creado en" required="false" />
-    <field name="created_by" type="user" label="Creado por" />
+    <field name="creado" type="calendar" default="NOW" label="Creado en" required="false" readonly="true"/>
+    <field name="creado_por" type="user" label="Creado por" readonly="true" default="CURRENT" />
 </form>

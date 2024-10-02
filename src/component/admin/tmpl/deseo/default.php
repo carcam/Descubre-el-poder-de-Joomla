@@ -25,6 +25,6 @@ HTMLHelper::_('behavior.keepalive');
 			</div>
 		</div>
 	</div>
-	<input type="hidden" name="deseo" value="">
+	<input type="hidden" name="task" value="">
 	<?php echo HTMLHelper::_('form.token'); ?>
 </form>
