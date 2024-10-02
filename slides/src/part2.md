@@ -36,7 +36,10 @@ _header: "Lo que vamos a ver"
 
 <!--
 _header: "Editando deseos"
--->
+--
+
+<div class="url">https://developingextensionsforjoomla5.com/jdayes2024/live/3-editview</div>
+
 
 <div class="columns">
 <div class="column column__content">
@@ -386,8 +389,9 @@ Capítulo 6
 </div>
 
 ---
+
 <!--
-_header: "Consuming Joomla Web Services"
+_header: "Usando los servicios web en Joomla!"
 -->
 <div class="columns">
 <div class="column column__content">
@@ -408,17 +412,44 @@ Capítulo 6
 </div>
 
 ---
+
 <!--
-_header: "Creando un punto final para nuestro servicio web"
+_header: "Creando el token de API"
 -->
-<div class="url">https://developingextensionsforjoomla5.com/jdayes2024/live/4-plugin-servicios-web</div>
+<div class="columns">
+<div class="column column__content">
+
+![width:640px](./images/api_token.png)
+
+</div>
+<div class="column column__reference">
+
+### References
+
+![](./images/cover.png)
+
+Capítulo 6
+
+</div>
+</div>
+<!--
+- El API Token es único por usuario
+- En un usuario recién creado, no hay API Token. El usuario tiene que guardar su configuración para crearlo
+- Solo el usuario puede crear y ver su API Token.
+- El API Token no se almacena en la base de datos.
+-->
+
+---
+<!--
+_header: "Creando un punto en entrada para nuestro servicio web"
+-->
+<div class="url">https://developingextensionsforjoomla5.com/jdayes2024/live/4-web-services-plugin</div>
 
 <div class="columns">
 <div class="column column__content">
 
 - Las rutas se añaden con plugins del tipo `webservices`.
-- En la ruta puedes definir las diferentes acciones que permites.
-- El método `createCRUDRoutes()` añade todas las acciones posibles al servicio web.
+- Vamos a desarrollar el plugin y lo instalaremos con el método **Descubrir** . que usamos con el componente.
 
 </div>
 <div class="column column__reference">
@@ -434,6 +465,171 @@ Capítulo 6
 
 </div>
 </div>
+
+---
+
+<!--
+_header: "Creando el plugin de servicio web"
+-->
+<div class="columns">
+<div class="column column__content">
+
+Fichero de manifiesto: `plugins/webservices/aiwfc/aiwfc.xml`: 
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<extension type="plugin" group="webservices" method="upgrade">
+    <name>plg_webservices_aiwfc</name>
+    <author><![CDATA[Carlos Cámara]]></author>
+    <authorEmail>carlos@hepta.es</authorEmail>
+    <authorUrl>https://developingextensionsforjoomla5.com</authorUrl>
+    <creationDate>2024-04-12</creationDate>
+    <copyright>(C) 2024 Langulero SL.</copyright>
+    <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+    <version>0.1.0</version>
+    <description><![CDATA[Plugin para enrutar el web service de lal lista de deseos para Joomla!]]></description>
+    <namespace path="src">Langulero\Plugin\WebServices\Aiwfc</namespace>
+    <files>
+        <folder plugin="aiwfc">services</folder>
+        <folder>src</folder>
+    </files>
+</extension>
+```
+
+</div>
+<div class="column column__reference">
+
+### References
+
+![](./images/cover.png)
+
+Capítulo 6
+
+</div>
+</div>
+
+<!--
+- Es el mismo formato que el manifiesto del componente
+- Tenemos cuidado de incluirlo en la carpeta`webservices` dentro de la carpeta `plugins`
+-->
+
+---
+
+<!--
+_header: "Creando el plugin de servicio web"
+-->
+<div class="columns">
+<div class="column column__content">
+
+Fichero: `plugins/webservices/aiwfc/services/provider.php`:
+
+```php
+<?php
+
+use Joomla\CMS\Extension\PluginInterface;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\DI\Container;
+use Joomla\DI\ServiceProviderInterface;
+use Joomla\Event\DispatcherInterface;
+use Langulero\Plugin\WebServices\Aiwfc\Extension\Aiwfc;
+
+\defined('_JEXEC') or die;
+
+return new class () implements ServiceProviderInterface {
+    public function register(Container $container): void
+    {
+        $container->set(
+            PluginInterface::class,
+            function (Container $container) {
+                $plugin     = new Aiwfc(
+                    $container->get(DispatcherInterface::class),
+                    (array) PluginHelper::getPlugin('webservices', 'aiwfc')
+                );
+                $plugin->setApplication(Factory::getApplication());
+
+                return $plugin;
+            }
+        );
+    }
+};
+```
+
+</div>
+<div class="column column__reference">
+
+### References
+
+![](./images/cover.png)
+
+Capítulo 6
+
+</div>
+</div>
+
+<!--
+- Misma estructura que en el componente
+-->
+
+---
+
+<!--
+_header: "Creando el plugin de servicio web"
+-->
+<div class="columns">
+<div class="column column__content">
+
+Fichero: `plugins/webservices/aiwfc/src/Extension/Aiwfc.php`: 
+
+```php
+<?php
+namespace Langulero\Plugin\WebServices\Aiwfc\Extension;
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\Router\Route;
+\defined('_JEXEC') or die;
+final class Aiwfc extends CMSPlugin
+{
+    public function onBeforeApiRoute(&$router)
+    {
+        $route = new Route(
+            ['GET'],
+			'v1/aiwfc/deseos/:id',
+			'deseos.displayItem',
+			['id' => '(\d+)'],
+			['component' => 'com_aiwfc']
+		);
+        $router->addRoute($route);
+        $router->createCRUDRoutes(
+            'v1/aiwfc/deseos',
+            'deseos.displayList',
+            ['component' => 'com_aiwfc']
+        );
+    }
+}
+```
+
+</div>
+<div class="column column__reference">
+
+### References
+
+![](./images/cover.png)
+
+Capítulo 6
+
+</div>
+</div>
+<!--
+- Dos formas de crear las rutas:
+  1. con el método `createCRUDRoutes()` que añade todas las acciones posibles al servicio web.
+  2. Con la clase `Route` del Framework de Joomla! que nos permite detallar las acciones a permitir.
+- Para entidades individuales, `createCRUDRoutes()` añade automáticamente el parámetro :id a la ruta que indiquemos.
+- Los parámetros son: 
+   - Ruta del servicio web
+   - Controlador que gestionará la petición
+   - Componente que gestionará la petición
+
+-->
 
 ---
 <!--
