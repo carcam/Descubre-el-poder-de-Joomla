@@ -633,16 +633,17 @@ Capítulo 6
 
 ---
 <!--
-_header: "Gesitonando las peticiones en nuestro componente"
+_header: "Gestionando las peticiones en nuestro componente"
 -->
 <div class="url">https://developingextensionsforjoomla5.com/jdayes2024/live/5-api</div>
 
 <div class="columns">
 <div class="column column__content">
 
-- Creamos el fichero `ProjectsController.php`
-- Creamos el fichero `JsonapiView.php`
+- En Joomla!, creamos el fichero `api/components/com_aiwfc/src/Controller/DeseosController.php`:
 
+```php
+```
 
 
 </div>
@@ -665,6 +666,67 @@ Capítulo 6
 - Extendemos la clase `ApiController` de Joomla, lo que nos ahorrará mucho código, ya que esta clase ya proporciona los métodos básicos como `displayList()` y `add()`.
 
 -->
+
+---
+
+<!--
+_header: "Creando el plugin de servicio web"
+-->
+<div class="columns">
+<div class="column column__content">
+
+Modificamos el manifiesto para añadir la API:
+
+```xml
+<api>
+    <files folder="api/components/com_aiwfc">
+        <folder>src</folder>
+    </files>
+</api>
+```
+
+</div>
+<div class="column column__reference">
+
+### References
+
+![](./images/cover.png)
+
+Capítulo 6
+
+</div>
+</div>
+<!--
+- Lo añadimos justo debajo de la sección de `administration`
+-->
+
+---
+
+<!--
+_header: "Creando el plugin de servicio web"
+-->
+<div class="columns">
+<div class="column column__content">
+
+- Copiamos las carpetas a un lugar seguro:
+    - `administrator/components/com_aiwfc``
+    - `api/components/com_aiwfc``
+
+- Desinstalamos el componente
+- Copiamos de nuevo los ficheros
+- Instalamos con Discover
+
+</div>
+<div class="column column__reference">
+
+### References
+
+![](./images/cover.png)
+
+Capítulo 6
+
+</div>
+</div>
 
 ---
 

@@ -20,4 +20,9 @@
             <![CDATA[Lista de deseos]]>
         </menu>
     </administration>
+    <api>
+        <files folder="api/components/com_aiwfc">
+            <folder>src</folder>
+        </files>
+    </api>
 </extension>

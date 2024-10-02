@@ -22,7 +22,7 @@ final class Aiwfc extends CMSPlugin
 
         $router->createCRUDRoutes(
             'v1/aiwfc/deseos',
-            'deseos.displayList',
+            'deseos',
             ['component' => 'com_aiwfc']
         );
     }
