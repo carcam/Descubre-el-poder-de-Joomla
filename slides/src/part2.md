@@ -231,7 +231,7 @@ _header: "Editando deseos"
 <div class="columns">
 <div class="column column__content">
 
-Añadimos nuestor formulario: `forms/deseo.xml`.
+Añadimos nuestro formulario: `forms/deseo.xml`.
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -239,8 +239,8 @@ Añadimos nuestor formulario: `forms/deseo.xml`.
     <field name="id" type="hidden" />
     <field name="titulo" type="text" label="Título" required="true" />
     <field name="descripcion" type="editor" label="Descripción" required="false" />
-    <field name="creado" type="text" label="Creado en" required="false" />
-    <field name="created_by" type="user" label="Creado por" />
+    <field name="creado" type="calendar" default="NOW" label="Creado en" required="false" readonly="true"/>
+    <field name="creado_por" type="user" label="Creado por" readonly="true" default="CURRENT" />
 </form>
 
 ```
@@ -253,7 +253,7 @@ Añadimos nuestor formulario: `forms/deseo.xml`.
 
 ![](./images/cover.png)
 
-Capítulo 2
+Capítulos 2 y 4
 
 </div>
 </div>
@@ -283,10 +283,67 @@ use Joomla\CMS\Router\Route;
 
 ```html
 <div class="item-title">
-  <a href="<?php echo Route::_('index.php?option=com_aiwfc&view=deseo&task=edit&id=' . (int) $item->id); ?>">
+  <a href="<?php echo Route::_('index.php?option=com_aiwfc&view=deseo&layout=edit&id=' . (int) $item->id); ?>">
       <?php echo $task->titulo;?>
   </a>
 </div>
+```
+
+
+</div>
+<div class="column column__reference">
+
+### References
+
+![](./images/cover.png)
+
+Capítulo 2
+
+</div>
+</div>
+
+---
+
+<!--
+_header: "Editando deseos"
+-->
+<div class="columns">
+<div class="column column__content">
+
+Añadimos el layout de edición: `tmpl/deseo/edit.php`
+
+```php
+<?php
+
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Router\Route;
+
+\defined('_JEXEC') or die;
+
+HTMLHelper::_('behavior.formvalidator');
+HTMLHelper::_('behavior.keepalive');
+
+?>
+<form action="<?php echo Route::_('index.php?option=com_aiwfc&view=deseo&layout=edit&id=' . (int) $this->item->id); ?>"
+            method="post" name="adminForm" id="deseo-form" class="form-validate">
+	<div>
+		<div class="row">
+			<div class="col-md-9">
+				<div class="row">
+					<div class="col-md-6">
+                        <?php echo $this->form->renderField('id'); ?>
+						<?php echo $this->form->renderField('titulo'); ?>
+						<?php echo $this->form->renderField('descripcion'); ?>
+						<?php echo $this->form->renderField('creado'); ?>
+                        <?php echo $this->form->renderField('creado_por'); ?>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<input type="hidden" name="task" value="">
+	<?php echo HTMLHelper::_('form.token'); ?>
+</form>
 ```
 
 

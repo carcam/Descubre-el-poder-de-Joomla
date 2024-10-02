@@ -26,7 +26,7 @@ use Joomla\CMS\Router\Route;
                     <td><?php echo $item->id;?></td>
                     <td>
                         <div class="item-title">
-                            <a href="<?php echo Route::_('index.php?option=com_aiwfc&view=deseo&task=edit&id=' . (int) $item->id); ?>">
+                            <a href="<?php echo Route::_('index.php?option=com_aiwfc&view=deseo&layout=edit&id=' . (int) $item->id); ?>">
                                 <?php echo $item->titulo;?>
                             </a>
                         </div>
