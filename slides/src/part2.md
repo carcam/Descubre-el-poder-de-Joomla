@@ -628,8 +628,11 @@ Capítulo 6
    - Ruta del servicio web
    - Controlador que gestionará la petición
    - Componente que gestionará la petición
-
 -->
+
+---
+
+- Instalamos el plugin usando la función de **descubrir**
 
 ---
 <!--
@@ -643,34 +646,86 @@ _header: "Gestionando las peticiones en nuestro componente"
 - En Joomla!, creamos el fichero `api/components/com_aiwfc/src/Controller/DeseosController.php`:
 
 ```php
-```
+<?php
 
+namespace Langulero\Component\Aiwfc\Api\Controller;
+
+use Joomla\CMS\MVC\Controller\ApiController;
+
+\defined('_JEXEC') or die;
+
+class DeseosController extends ApiController
+{
+	protected $contentType = 'Deseos';
+	protected $default_view = 'Deseos';
+}
+```
 
 </div>
 <div class="column column__reference">
 
-
 ### References
-
 
 ![](./images/cover.png)
 
 Capítulo 6
 
-
 </div>
 </div>
 
 <!--
-
 - Extendemos la clase `ApiController` de Joomla, lo que nos ahorrará mucho código, ya que esta clase ya proporciona los métodos básicos como `displayList()` y `add()`.
+-->
+---
 
+<!--
+_header: "Creando el plugin de servicio web"
+-->
+<div class="columns">
+<div class="column column__content">
+
+Fichero: `api/components/com_aiwfc/src/View/JsonapiView.php`: 
+
+```php
+<?php
+namespace Langulero\Component\Aiwfc\Api\View\Deseos;
+use Joomla\CMS\MVC\View\JsonApiView as BaseApiView;
+
+class JsonapiView extends BaseApiView
+{
+	protected $fieldsToRenderList = [
+        'id',
+        'titulo',
+        'description',
+        'creado'
+	];
+    protected $fieldsToRenderItem = [
+        'id',
+        'titulo',
+        'descripcion'
+	];
+}
+```
+
+</div>
+<div class="column column__reference">
+
+### References
+
+![](./images/cover.png)
+
+Capítulo 6
+
+</div>
+</div>
+<!--
+- Nota
 -->
 
 ---
 
 <!--
-_header: "Creando el plugin de servicio web"
+_header: "Preparamos el manifiesto del componente"
 -->
 <div class="columns">
 <div class="column column__content">
@@ -703,18 +758,33 @@ Capítulo 6
 ---
 
 <!--
-_header: "Creando el plugin de servicio web"
+_header: "Reinstalando el componente"
 -->
 <div class="columns">
 <div class="column column__content">
 
 - Copiamos las carpetas a un lugar seguro:
-    - `administrator/components/com_aiwfc``
-    - `api/components/com_aiwfc``
+    - `administrator/components/com_aiwfc`
+    - `api/components/com_aiwfc`
 
-- Desinstalamos el componente
+- Desinstalamos el componente ⚠ ️
 - Copiamos de nuevo los ficheros
-- Instalamos con Discover
+- Instalamos con **Descubrir**
+
+</div>
+</div>
+
+---
+
+<!--
+_header: "Probando el Servicio Web"
+-->
+<div class="columns">
+<div class="column column__content">
+
+Fichero de pruebas HoppScotch:
+
+<div class="url">https://developingextensionsforjoomla5.com/jdayes2024/live/main/Hoppscotch</div>
 
 </div>
 <div class="column column__reference">
@@ -727,6 +797,9 @@ Capítulo 6
 
 </div>
 </div>
+<!--
+- En el libro hay un script PHP para hacer las pruebas
+-->
 
 ---
 
@@ -737,19 +810,18 @@ _header: "En brazos de gigantes"
 - Libro online *Joomla Extension Development* by Nicholas Dionysopoulos
   - https://www.dionysopoulos.me/book.html
 - Libro de Astrid: *Joomla 4 – Developing Extensions: Step by step to an working Joomla extension*
-  - https://a.co/d/1BIVa8j
-  - https://web.archive.org/web/20230518080457/https://blog.astrid-guenther.de/en/der-weg-zu-joomla4-erweiterungen/
+  - [Disponible en Amazon](https://a.co/d/1BIVa8j)
+  - [Disponible en Web Archive](https://web.archive.org/web/20230518080457/https://blog.astrid-guenther.de/en/der-weg-zu-joomla4-erweiterungen/)
 
 - Documentación Joomla! para programadores
   - https://manual.joomla.org
 
   <!-- Si vi más lejos que otros hombres es porque estaba subido a hombros de gigantes. -->
+
 ---
+
 <!--
-_class: thank-you
-footer: ''
+_class: cover 
 -->
 
-<div class="text-huge">
-    Thank you!
-</div>
+![bg contain](./images/end.png)
