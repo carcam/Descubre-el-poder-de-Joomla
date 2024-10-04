@@ -19,7 +19,7 @@ footer: '[Developing Extensions for Joomla! 5](https://developingextensionsforjo
 1. ~~Planificando el componente~~
 2. ~~Creando las tablas en la base de datos~~
 3. ~~Entendiendo la estructura de carpetas~~
-4. ~~Describiendo nuestro componente a Joomla!~~
+4. ~~Programando el componente~~
 
 ---
 <!--
@@ -33,10 +33,42 @@ _header: "Lo que vamos a ver"
 3. ¡A divertirse!
 
 ---
+<!--
+_header: "Añadiendo la vista de edición"
+-->
+<div class="url">https://developingextensionsforjoomla5.com/jdayes2024/live/3-editview</div>
+<div class="columns">
+<div class="column column__content">
+
+- Usamos la misma vista para las acciones de **editar** y **agregar**.
+- Para los elementos individuales no usamos una consulta, sino la clase ``Table``.
+- Usamos la clase ``Forms`` para crear el formulario de manera sencilla.
+
+</div>
+<div class="column column__reference">
+
+### Referencias
+![](./images/cover.png)
+Capítulos 2 y 4
+
+</div>
+</div>
+
+<!--
+
+- Creamos nuestra vista.
+- Añadimos nuestra primera barra de herramientas en la vista.
+- Creamos nuestro modelo extendiendo **AdminModel**.
+- Creamos el archivo **src/Table/DeseoTable.php**.
+- Creamos el archivo **forms/deseo.xml**.
+- Añadimos un enlace al título de la tarea para editar.
+
+-->
+---
 
 <!--
 _header: "Editando deseos"
---
+-->
 
 <div class="url">https://developingextensionsforjoomla5.com/jdayes2024/live/3-editview</div>
 
