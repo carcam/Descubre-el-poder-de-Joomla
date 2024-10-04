@@ -7,6 +7,10 @@ Esta sesión siguió la estructura de mi libro *[Developing Extensions For Jooml
 
 <a href="https://developingextensionsforjoomla5.com/" style="text-align: center"><img alt="Portada del libro Developing Extensions For Joomla! 5" src="https://developingextensionsforjoomla5.com/images/cover.webp" align="center" width="150"></a>
 
+## Descarga la presentación en pdf
+
+- [Primera parte - Crear el componente](slides/part1.pdf)
+- [Segunda parte - Añade el servicio web](slides/part2.pdf)
 
 ## Cómo usar este repositorio
 
