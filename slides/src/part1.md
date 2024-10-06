@@ -41,7 +41,7 @@ footer: '[Developing Extensions for Joomla! 5](https://developingextensionsforjo
 _header: "Lo que vamos a ver"
 -->
 
-# Parte 1: Desarrollar una aplicación de lista de deseos para Navidad~~
+# Parte 1: Desarrollar una lista de ~~tareas~~deseos para Navidad
 1. Planificando el componente
 2. Creando las tablas en la base de datos
 3. Entendiendo la estructura de carpetas
@@ -52,7 +52,7 @@ _header: "Lo que vamos a ver"
 _header: "Lo que vamos a ver"
 -->
 
-## Parte 2: Desarrollando nuestro servicio web
+# Parte 2: Desarrollando nuestro servicio web
 1. Editando nuestros deseos
 1. Introducción a los servicios web
 2. Enrutando nuestro servicio web
